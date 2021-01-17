@@ -56,11 +56,21 @@ ws.on("message", function incoming(data) {
 
     if (data != "ping"){
 
+        var JsObj = JSON.parse(data);
+
+        Promise
+            .resolve()
+            .then(()=>{
+                switch(JsObj.function){
+                    case "statusReport":
+                        return axios.
+                }
+            })
+
         // 和本地 mongo 建立连接，并将获取的数据转换为 JSON 并存入 robots 中。
         MongoClient.connect('mongodb://localhost/robot', (err, client)=>{
             if (err) throw err;
 
-            var JsObj = JSON.parse(data);
             var db = client.db('robot');
 
             db.collection('robots').insert(JsObj, (err, records)=>{
