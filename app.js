@@ -8,6 +8,8 @@ const https = require("https");
 const fs = require("fs");
 const WebSocket = require("ws");
 const MongoClient = require("mongodb").MongoClient;
+const Connection = require("./lib/connections/connection.js");
+const GLOBAL_PARAM = require("./lib/global_param.js");
 
 // http sever
 var http_server = http.createServer(app);
@@ -32,7 +34,7 @@ app.use(bodyParser.json());
 //设置跨域访问
 app.all("*",function(req,res,next){
     //设置允许跨域的域名，*代表允许任意域名跨域
-    res.header("Access-Control-Allow-Origin",'http://localhost');
+    res.header("Access-Control-Allow-Origin",GLOBAL_PARAM.HOST_NAME);
     //允许的header类型
     res.header("Access-Control-Allow-Headers","Content-Type");
     //跨域允许的请求方式 
@@ -51,8 +53,6 @@ var ws = new WebSocket("ws://www.anbotcloud.com:8180/anbotwebsocket/1b8f1ebd1c88
 
 // 接受服务端发来的数据
 ws.on("message", function incoming(data) {
-    // 将接收到的信息存储到 file 中
-    // fs.appendFileSync("./data.txt", "\n" + data, err => console.log(err));
 
     if (data != "ping"){
 
@@ -61,24 +61,37 @@ ws.on("message", function incoming(data) {
         Promise
             .resolve()
             .then(()=>{
+                console.log(JsObj.function);
                 switch(JsObj.function){
                     case "statusReport":
-                        return axios.
+                        Connection.updateRobotStatus(JsObj.param);
+                        break;
+                    case "loginMainServer":
+                        return null;
+                        break;
+                    case "robotOffline":
+                        return null;
+                        break;
+                    case "personReport": 
+                        break;
+                    case "plateReport":
+                        break;
+
                 }
-            })
-
-        // 和本地 mongo 建立连接，并将获取的数据转换为 JSON 并存入 robots 中。
-        MongoClient.connect('mongodb://localhost/robot', (err, client)=>{
-            if (err) throw err;
-
-            var db = client.db('robot');
-
-            db.collection('robots').insert(JsObj, (err, records)=>{
-                if (err) throw err;
-
-                console.log("存储了一条数据");
             });
-        });
+
+        // // 和本地 mongo 建立连接，并将获取的数据转换为 JSON 并存入 robots 中。
+        // MongoClient.connect('mongodb://localhost/robot', (err, client)=>{
+        //     if (err) throw err;
+
+        //     var db = client.db('robot');
+
+        //     db.collection('robots').insert(JsObj, (err, records)=>{
+        //         if (err) throw err;
+
+        //         console.log("存储了一条数据");
+        //     });
+        // });
 
     } else {
         ws.send("pong");
@@ -96,7 +109,7 @@ app.get('/', (req, res, next) => {
 
 
 
-http_server.listen(3001, () =>{
+http_server.listen(3002, () =>{
 	console.log('App is running at port 3002.')
 
 })
