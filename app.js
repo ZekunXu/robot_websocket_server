@@ -64,13 +64,13 @@ ws.on("message", function incoming(data) {
                 console.log(JsObj.function);
                 switch(JsObj.function){
                     case "statusReport":
-                        Connection.updateRobotStatus(JsObj.param);
+                        return Connection.updateRobotStatus(JsObj.param);
                         break;
                     case "loginMainServer":
-                        return null;
+                        return Connection.updateRobotOnlineOfflineStatus(JsObj);
                         break;
                     case "robotOffline":
-                        return null;
+                        return Connection.updateRobotOnlineOfflineStatus(JsObj);
                         break;
                     case "personReport": 
                         break;
