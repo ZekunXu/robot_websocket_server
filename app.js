@@ -67,15 +67,16 @@ ws.on("message", function incoming(data) {
                         return Connection.updateRobotStatus(JsObj.param);
                         break;
                     case "loginMainServer":
-                        console.log(JsObj);
                         return Connection.updateRobotOnlineOfflineStatus(JsObj);
                         break;
                     case "robotOffline":
-                        console.log(JsObj);
                         return Connection.updateRobotOnlineOfflineStatus(JsObj);
                         break;
                     case "personReport":
-                        return Connection.savePersionImageAndMsg(JsObj);
+                        return Connection.savePersonImage(JsObj);
+                        break;
+                    case "faceReport":
+                        return Connection.savePersonImage(JsObj);
                         break;
                     case "plateReport":
                         break;
