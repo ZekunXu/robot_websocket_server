@@ -27,8 +27,8 @@ app.use(session({
 
 
 //配置post请求
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false, limit: '50mb'}));
+app.use(bodyParser.json({limit: '50mb'}));
 
 
 //设置跨域访问
@@ -74,7 +74,8 @@ ws.on("message", function incoming(data) {
                         console.log(JsObj);
                         return Connection.updateRobotOnlineOfflineStatus(JsObj);
                         break;
-                    case "personReport": 
+                    case "personReport":
+                        return Connection.savePersionImageAndMsg(JsObj);
                         break;
                     case "plateReport":
                         break;
