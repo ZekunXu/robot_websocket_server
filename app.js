@@ -73,7 +73,7 @@ ws.on("message", function incoming(data) {
                         return Connection.updateRobotOnlineOfflineStatus(JsObj);
                         break;
                     case "personReport":
-                        return Connection.savePersonImage(JsObj);
+                        // return Connection.savePersonImage(JsObj);
                         break;
                     case "faceReport":
                         return Connection.savePersonImage(JsObj);
