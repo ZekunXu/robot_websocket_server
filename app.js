@@ -10,6 +10,8 @@ const WebSocket = require("ws");
 const MongoClient = require("mongodb").MongoClient;
 const Connection = require("./lib/connections/connection.js");
 const GLOBAL_PARAM = require("./lib/global_param.js");
+const MsgStorage = require("./lib/connections/msg_store.js");
+const moment = require("moment");
 
 // http sever
 var http_server = http.createServer(app);
@@ -64,19 +66,20 @@ ws.on("message", function incoming(data) {
                 console.log(JsObj.function);
                 switch(JsObj.function){
                     case "statusReport":
-                        return Connection.updateRobotStatus(JsObj.param);
+                        MsgStorage.storeRobotStatusMsg(JsObj.param);
+                        Connection.updateRobotStatus(JsObj.param);
                         break;
                     case "loginMainServer":
-                        return Connection.updateRobotOnlineOfflineStatus(JsObj);
+                        Connection.updateRobotOnlineOfflineStatus(JsObj);
                         break;
                     case "robotOffline":
-                        return Connection.updateRobotOnlineOfflineStatus(JsObj);
+                        Connection.updateRobotOnlineOfflineStatus(JsObj);
                         break;
                     case "personReport":
                         // return Connection.savePersonImage(JsObj);
                         break;
                     case "faceReport":
-                        return Connection.savePersonImage(JsObj);
+                        Connection.savePersonImage(JsObj);
                         break;
                     case "plateReport":
                         break;
@@ -99,7 +102,7 @@ ws.on("message", function incoming(data) {
 
     } else {
         ws.send("pong");
-        console.log("回复了一条 pong");
+        console.log(moment().format('YYYY MM DD, HH:mm:ss'));
     }
 
 });
