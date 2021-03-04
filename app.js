@@ -70,9 +70,11 @@ ws.on("message", function incoming(data) {
                         Connection.updateRobotStatus(JsObj.param);
                         break;
                     case "loginMainServer":
+                        MsgStorage.storeRobotOnlineOfflineStatus(JsObj);
                         Connection.updateRobotOnlineOfflineStatus(JsObj);
                         break;
                     case "robotOffline":
+                        MsgStorage.storeRobotOnlineOfflineStatus(JsObj);
                         Connection.updateRobotOnlineOfflineStatus(JsObj);
                         break;
                     case "personReport":
