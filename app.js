@@ -84,6 +84,12 @@ ws.on("message", function incoming(data) {
                         Connection.savePersonImage(JsObj);
                         break;
                     case "plateReport":
+                        MsgStorage.storeVehicleReport(JsObj);
+                        break;
+                    case "missionResultReport": //任务上报，目前万维包括导航和自动充电任务
+                        break;
+                    case "faceDiscernReport": //人脸检测上报，1是白名单，2是黑名单，3是入侵
+                        MsgStorage.storeFaceRecognitionReport(JsObj);
                         break;
 
                 }
